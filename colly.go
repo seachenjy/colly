@@ -884,6 +884,13 @@ func (c *Collector) OnResponse(f ResponseCallback) {
 	c.lock.Unlock()
 }
 
+// clear all response callbacks
+func (c *Collector) ClearResponseCallback() {
+	c.lock.Lock()
+	c.responseCallbacks = nil
+	c.lock.Unlock()
+}
+
 // OnHTML registers a function. Function will be executed on every HTML
 // element matched by the GoQuery Selector parameter.
 // GoQuery Selector is a selector used by https://github.com/PuerkitoBio/goquery
@@ -896,6 +903,11 @@ func (c *Collector) OnHTML(goquerySelector string, f HTMLCallback) {
 		Selector: goquerySelector,
 		Function: f,
 	})
+	c.lock.Unlock()
+}
+func (c *Collector) ClearHtmlCallback() {
+	c.lock.Lock()
+	c.htmlCallbacks = nil
 	c.lock.Unlock()
 }
 
@@ -954,6 +966,11 @@ func (c *Collector) OnError(f ErrorCallback) {
 		c.errorCallbacks = make([]ErrorCallback, 0, 4)
 	}
 	c.errorCallbacks = append(c.errorCallbacks, f)
+	c.lock.Unlock()
+}
+func (c *Collector) ClearErrorCallback() {
+	c.lock.Lock()
+	c.errorCallbacks = nil
 	c.lock.Unlock()
 }
 
