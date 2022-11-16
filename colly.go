@@ -40,10 +40,10 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/antchfx/htmlquery"
 	"github.com/antchfx/xmlquery"
-	"github.com/gocolly/colly/v2/debug"
-	"github.com/gocolly/colly/v2/storage"
 	"github.com/kennygrant/sanitize"
 	whatwgUrl "github.com/nlnwa/whatwg-url/url"
+	"github.com/seachenjy/colly/debug"
+	"github.com/seachenjy/colly/storage"
 	"github.com/temoto/robotstxt"
 	"google.golang.org/appengine/urlfetch"
 )
@@ -446,7 +446,7 @@ func CheckHead() CollectorOption {
 // Init initializes the Collector's private variables and sets default
 // configuration for the Collector
 func (c *Collector) Init() {
-	c.UserAgent = "colly - https://github.com/gocolly/colly/v2"
+	c.UserAgent = "colly - https://github.com/seachenjy/colly"
 	c.Headers = nil
 	c.MaxDepth = 0
 	c.store = &storage.InMemoryStorage{}
@@ -469,13 +469,14 @@ func (c *Collector) Init() {
 // With an Http.Client that is provided by appengine/urlfetch
 // This function should be used when the scraper is run on
 // Google App Engine. Example:
-//   func startScraper(w http.ResponseWriter, r *http.Request) {
-//     ctx := appengine.NewContext(r)
-//     c := colly.NewCollector()
-//     c.Appengine(ctx)
-//      ...
-//     c.Visit("https://google.ca")
-//   }
+//
+//	func startScraper(w http.ResponseWriter, r *http.Request) {
+//	  ctx := appengine.NewContext(r)
+//	  c := colly.NewCollector()
+//	  c.Appengine(ctx)
+//	   ...
+//	  c.Visit("https://google.ca")
+//	}
 func (c *Collector) Appengine(ctx context.Context) {
 	client := urlfetch.Client(ctx)
 	client.Jar = c.backend.Client.Jar
